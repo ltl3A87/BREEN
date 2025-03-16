@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "breen"
+version = "1.0.0"
+description = "Bridging Data-efficient Encoder-free MLLM with Learnable Queries."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+]
+dependencies = [
+    "sentencepiece==0.1.99", "shortuuid",
+    "peft==0.4.0", "bitsandbytes==0.41.0",
+    "markdown2[all]", "numpy", "scikit-learn==1.2.2", "urllib3==1.26.0",
+    "gradio==4.5.0", "requests", "httpx==0.24.0", "uvicorn", "fastapi","ftfy",
+    "einops==0.6.1", "einops-exts==0.0.4", "timm==0.6.13", "prettytable", "openpyxl", "transformers==4.45.1",
+    "torch==2.1.1", "torchvision==0.16.1", "torchaudio==2.1.1", "xformers==0.0.23",
+]
+
+[project.optional-dependencies]
+train = ["ninja", "wandb", "tensorboardX"]
+
+[tool.setuptools.packages.find]
+exclude = ["assets*", "benchmark*", "docs", "dist*", "playground*", "scripts*", "tests*"]
+
+[tool.wheel]
+exclude = ["assets*", "benchmark*", "docs", "dist*", "playground*", "scripts*", "tests*"]
