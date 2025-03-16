@@ -790,40 +790,6 @@ def preprocess(
 
     return dict(input_ids=input_ids, labels=targets)
 
-def read_from_line(image_dic, image_encoding):
-    if isinstance(image_dic, list):
-        image_dic = image_dic[0]
-    if 'patch' in image_dic:
-        patch = image_dic['patch']
-        if 'apdcephfs_nj3' in patch:
-            patch = patch.replace("apdcephfs_nj3/share_300377003/tianqincai/datacomp1B-image", "apdcephfs_jn2/share_302958099/backup_data/datacomp1b")
-            patch = patch.replace("apdcephfs_nj3/share_300377003/jachymchen/data/datacomp1B_v2_cvm",
-                                  "apdcephfs_jn2/share_302958099/backup_data/datacomp1B_v2_cvm")
-        if 'apdcephfs_nj2/share_300280959/tianqincai' in patch:
-            patch = patch.replace("apdcephfs_nj2/share_300280959/tianqincai/datacomp1B-image",
-                                  "apdcephfs_jn2/share_302958099/backup_data/datacomp1b")
-        if image_encoding == 'bytearray':
-            start_num = int(image_dic['start_num'])
-            size = int(image_dic['size'])
-            with open(patch, 'rb') as f:
-                f.seek(start_num)
-                image_bytes = f.read(size)
-                image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
-        elif image_encoding == 'base64':
-            start_num = int(image_dic['start_num'])
-            size = int(image_dic['size'])
-            with open(patch, 'rb') as f:
-                f.seek(start_num)
-                image_bytes = f.read(size)
-                image = Image.open(io.BytesIO(base64.b64decode(image_bytes.decode()))).convert('RGB')
-        elif image_encoding == 'jpg':
-            image = Image.open(patch).convert('RGB')
-        else:
-            raise NotImplementedError("不支持的image_encoding")
-    else:
-        image = Image.open(image_dic['img_path']).convert('RGB')
-    return image
-
 
 class LazySupervisedDataset(Dataset):
     """Dataset for supervised fine-tuning."""
@@ -832,14 +798,7 @@ class LazySupervisedDataset(Dataset):
                  tokenizer: transformers.PreTrainedTokenizer,
                  data_args: DataArguments):
         super(LazySupervisedDataset, self).__init__()
-        if "newllava_0508_1231k_transfered" in data_path:
-            self.list_data_dict = json.load(open(data_path, "r"))[:259840] + json.load(open(data_path, "r"))[260096:552192] + json.load(open(data_path, "r"))[552448:672256] +json.load(open(data_path, "r"))[672512:1056000] + json.load(open(data_path, "r"))[1057792:]
-        elif "16m" in data_path or "33m" in data_path:
-            self.list_data_dict = json.load(open(data_path, "r"))
-        elif "4176k_transfered_fixed_arxiv" in data_path:
-            self.list_data_dict = json.load(open(data_path, "r"))[:3290816] + json.load(open(data_path, "r"))[3291456:3325184] + json.load(open(data_path, "r"))[3325824:3431296] + json.load(open(data_path, "r"))[3431936:]
-        else:
-            self.list_data_dict = json.load(open(data_path, "r"))[:4000000]
+        self.list_data_dict = json.load(open(data_path, "r"))
         rank0_print(f"Formatting {len(self.list_data_dict)} inputs...Skip in lazy mode")
 
         self.data_is_index = type(self.list_data_dict[0]) == str
@@ -888,8 +847,7 @@ class LazySupervisedDataset(Dataset):
             image_folder = self.data_args.image_folder
             processor = self.data_args.image_processor
             processor_clip = self.data_args.image_processor_clip
-            # raw_image = Image.open(os.path.join(image_folder, image_file)).convert('RGB')
-            raw_image = read_from_line(image_file, 'bytearray')
+            raw_image = Image.open(os.path.join(image_folder, image_file)).convert('RGB')
             
             def compute_basehw(raw_image, processor):
                 width, height = raw_image.size
