@@ -2,6 +2,8 @@
 
 Official pytorch implementation of **BREEN: Bridge Data-Efficient Encoder-Free Multimodal Learning with Learnable Queries**.  
 
+The training instructions and model weights are coming soon!
+
 
 ## Architecture
 <p align="center">
