@@ -520,4 +520,4 @@ class BREENForCausalLM(Qwen2ImgForCausalLM, EVEMetaForCausalLM):
 
 
 AutoConfig.register("breen", BREENConfig)
-AutoModelForCausalLM.register(BREENConfig, BREENQwen25ForCausalLM)
+AutoModelForCausalLM.register(BREENConfig, BREENForCausalLM)
