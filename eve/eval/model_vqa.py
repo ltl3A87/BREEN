@@ -47,11 +47,13 @@ def eval_model(args):
         image_file = line["image"]
         qs = line["text"]
         cur_prompt = qs
+        print("1")
         if model.config.mm_use_im_start_end:
             qs = DEFAULT_IM_START_TOKEN + DEFAULT_IMAGE_TOKEN + DEFAULT_IM_END_TOKEN + '\n' + qs
         else:
             qs = DEFAULT_IMAGE_TOKEN + '\n' + qs
 
+        print("2")
         conv = conv_templates[args.conv_mode].copy()
         conv.append_message(conv.roles[0], qs)
         conv.append_message(conv.roles[1], None)
@@ -63,6 +65,7 @@ def eval_model(args):
         image_tensor = process_images([image], image_processor, None)[0]
         # image_tensor = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
 
+        print("3")
         stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO and conv.sep_style != SeparatorStyle.QWEN else conv.sep2
         keywords = [stop_str]
         stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
