@@ -48,13 +48,13 @@ def eval_model(args):
         image_file = line["image"]
         qs = line["text"]
         cur_prompt = qs
-        print("1")
+        print("1", flush=True)
         if model.config.mm_use_im_start_end:
             qs = DEFAULT_IM_START_TOKEN + DEFAULT_IMAGE_TOKEN + DEFAULT_IM_END_TOKEN + '\n' + qs
         else:
             qs = DEFAULT_IMAGE_TOKEN + '\n' + qs
 
-        print("2")
+        print("2", flush=True)
         conv = conv_templates[args.conv_mode].copy()
         conv.append_message(conv.roles[0], qs)
         conv.append_message(conv.roles[1], None)
@@ -66,12 +66,12 @@ def eval_model(args):
         image_tensor = process_images([image], image_processor, None)[0]
         # image_tensor = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
 
-        print("3")
+        print("3", flush=True)
         stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO and conv.sep_style != SeparatorStyle.QWEN else conv.sep2
         keywords = [stop_str]
         stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
 
-        print("before generate")
+        print("before generate", flush=True)
         with torch.inference_mode():
             output_ids = model.generate(
                 input_ids,
@@ -83,7 +83,7 @@ def eval_model(args):
                 # no_repeat_ngram_size=3,
                 max_new_tokens=1024,
                 use_cache=True)
-        print("after generate")
+        print("after generate", flush=True)
 
         input_token_len = input_ids.shape[1]
         n_diff_input_output = (input_ids != output_ids[:, :input_token_len]).sum().item()
