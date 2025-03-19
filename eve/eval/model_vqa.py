@@ -42,6 +42,7 @@ def eval_model(args):
     answers_file = os.path.expanduser(args.answers_file)
     os.makedirs(os.path.dirname(answers_file), exist_ok=True)
     ans_file = open(answers_file, "w")
+    print("0")
     for line in tqdm(questions):
         idx = line["question_id"]
         image_file = line["image"]
