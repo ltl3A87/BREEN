@@ -35,6 +35,7 @@ def eval_model(args):
                                                                            moe=args.moe, image_expert=args.image_expert,
                                                                            qwen25=args.qwen25, shared=args.shared,
                                                                            clip_init=args.clip_init)
+    print("load pretrained model")
 
     questions = [json.loads(q) for q in open(os.path.expanduser(args.question_file), "r")]
     questions = get_chunk(questions, args.num_chunks, args.chunk_idx)
@@ -66,6 +67,7 @@ def eval_model(args):
         keywords = [stop_str]
         stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
 
+        print("before generate")
         with torch.inference_mode():
             output_ids = model.generate(
                 input_ids,
@@ -77,6 +79,7 @@ def eval_model(args):
                 # no_repeat_ngram_size=3,
                 max_new_tokens=1024,
                 use_cache=True)
+        print("after generate")
 
         input_token_len = input_ids.shape[1]
         n_diff_input_output = (input_ids != output_ids[:, :input_token_len]).sum().item()
