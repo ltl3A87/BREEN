@@ -163,6 +163,7 @@ class VisionLinearTokenizer(nn.Module):
     def forward(self, pixel_values, modules):
         pixel_values, pixel_masks = pixel_values[:, :-1, :, :], pixel_values[:, -1:, :, :]
         print("pixel_values.shape 1: ", pixel_values.shape)
+        print("self.dtype: ", self.dtype)
 
         patch_embeds = self.patch_embedding(pixel_values.to(dtype=self.dtype))
         print("patch_embeds.shape 2: ", patch_embeds.shape)
