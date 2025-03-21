@@ -138,8 +138,8 @@ class BREENForCausalLM(Qwen2ImgForCausalLM, EVEMetaForCausalLM):
             cache_position=cache_position,
         )
 
-        print("outputs: ", outputs)
-        print("outputs after")
+        # print("outputs: ", outputs)
+        print("outputs after", flush=True)
 
 
         loss = None
@@ -362,10 +362,10 @@ class BREENForCausalLM(Qwen2ImgForCausalLM, EVEMetaForCausalLM):
                         loss = loss + torch.sum(mask_prob)*0
                 print('all_loss', loss)
         else:
-            print("labels is None: ")
-            print('debug 1')
+            print("labels is None: ", flush=True)
+            print('debug 1', flush=True)
             hidden_states = outputs[0]
-            print('debug 2')
+            print('debug 2', flush=True)
             # if self.auto_clip:
             #     if num_logits_to_keep == 0:
             #         logits = self.lm_head(hidden_states[:, clip_token_query.shape[1]:, :]).float()
@@ -373,8 +373,8 @@ class BREENForCausalLM(Qwen2ImgForCausalLM, EVEMetaForCausalLM):
             #         logits = self.lm_head(hidden_states[:, -(num_logits_to_keep-clip_token_query.shape[1]):, :]).float()
             # else:
             logits = self.lm_head(hidden_states[:, -num_logits_to_keep:, :]).float()
-            print('debug 3')
-            print('logits', logits)
+            print('debug 3', flush=True)
+            print('logits', logits, flush=True)
 
 
         if self.config.requires_cliploss and self.training:
