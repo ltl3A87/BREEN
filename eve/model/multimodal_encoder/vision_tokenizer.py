@@ -164,6 +164,7 @@ class VisionLinearTokenizer(nn.Module):
         pixel_values, pixel_masks = pixel_values[:, :-1, :, :], pixel_values[:, -1:, :, :]
         print("pixel_values.shape 1: ", pixel_values.shape)
         print("self.dtype: ", self.dtype)
+        print("self.device: ", self.device)
 
         patch_embeds = self.patch_embedding(pixel_values.to(dtype=self.dtype))
         print("patch_embeds.shape 2: ", patch_embeds.shape)
