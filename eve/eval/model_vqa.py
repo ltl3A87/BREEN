@@ -34,7 +34,7 @@ def eval_model(args):
     tokenizer, model, image_processor, context_len = load_pretrained_model(model_path, args.model_base, model_name,
                                                                            moe=args.moe, image_expert=args.image_expert,
                                                                            qwen25=args.qwen25, shared=args.shared,
-                                                                           clip_init=args.clip_init)
+                                                                           clip_init=args.clip_init, device='cpu')
     print("load pretrained model")
 
     questions = [json.loads(q) for q in open(os.path.expanduser(args.question_file), "r")]
