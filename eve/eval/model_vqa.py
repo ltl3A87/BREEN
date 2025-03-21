@@ -34,7 +34,7 @@ def eval_model(args):
     tokenizer, model, image_processor, context_len = load_pretrained_model(model_path, args.model_base, model_name,
                                                                            moe=args.moe, image_expert=args.image_expert,
                                                                            qwen25=args.qwen25, shared=args.shared,
-                                                                           clip_init=args.clip_init, device='cpu')
+                                                                           clip_init=args.clip_init)
     print("load pretrained model")
 
     questions = [json.loads(q) for q in open(os.path.expanduser(args.question_file), "r")]
@@ -60,7 +60,7 @@ def eval_model(args):
         conv.append_message(conv.roles[1], None)
         prompt = conv.get_prompt(getattr(model.config, "pre_text_fitu", False))
 
-        input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0) # .cuda()
+        input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
 
         image = Image.open(os.path.join(args.image_folder, image_file))
         image_tensor = process_images([image], image_processor, None)[0]
@@ -75,7 +75,7 @@ def eval_model(args):
         with torch.inference_mode():
             output_ids = model.generate(
                 input_ids,
-                images=image_tensor.unsqueeze(0).half(), #.cuda(),
+                images=image_tensor.unsqueeze(0).half().cuda(),
                 do_sample=True if args.temperature > 0 else False,
                 temperature=args.temperature,
                 top_p=args.top_p,
