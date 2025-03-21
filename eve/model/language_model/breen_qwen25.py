@@ -113,6 +113,8 @@ class BREENForCausalLM(Qwen2ImgForCausalLM, EVEMetaForCausalLM):
         # Set QUERY_TOKEN_INDEX to 2
         input_indicators[modi_input_ids == QUERY_TOKEN_INDEX] = 2
 
+        print("input_indicators: ", input_indicators)
+
         if position_ids is not None:
             _modi_input_ids = modi_input_ids
             position_ids, past_key_values, attention_mask, cache_position = (
@@ -120,6 +122,7 @@ class BREENForCausalLM(Qwen2ImgForCausalLM, EVEMetaForCausalLM):
                                                         attention_mask=attention_mask,
                                                         cache_position=None,
                                                         use_cache=True))
+        print("input_ids: ", input_ids)
 
         outputs = self.model(
             input_ids=input_ids,
@@ -134,6 +137,8 @@ class BREENForCausalLM(Qwen2ImgForCausalLM, EVEMetaForCausalLM):
             return_dict=return_dict,
             cache_position=cache_position,
         )
+
+        print("outputs: ", outputs)
 
 
         loss = None
