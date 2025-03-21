@@ -374,14 +374,14 @@ class BREENForCausalLM(Qwen2ImgForCausalLM, EVEMetaForCausalLM):
             # else:
             logits = self.lm_head(hidden_states[:, -num_logits_to_keep:, :]).float()
             print('debug 3', flush=True)
-            print('logits', logits, flush=True)
+            # print('logits', logits, flush=True)
             print("logits.shape", logits.shape, flush=True)
             max_value = torch.max(logits)
-            print("Maximum value:", max_value)
+            print("Maximum value:", max_value, flush=True)
 
             # Find the minimum value
             min_value = torch.min(logits)
-            print("Minimum value:", min_value)
+            print("Minimum value:", min_value, flush=True)
 
 
         if self.config.requires_cliploss and self.training:
