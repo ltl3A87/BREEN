@@ -139,6 +139,7 @@ class BREENForCausalLM(Qwen2ImgForCausalLM, EVEMetaForCausalLM):
         )
 
         print("outputs: ", outputs)
+        print("outputs after")
 
 
         loss = None
