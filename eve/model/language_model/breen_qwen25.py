@@ -143,6 +143,7 @@ class BREENForCausalLM(Qwen2ImgForCausalLM, EVEMetaForCausalLM):
 
         loss = None
         if labels is not None:
+            print("labels is not None: ")
             hidden_states = outputs[0]
             hidden_dim = hidden_states.size(-1)
 
@@ -360,6 +361,7 @@ class BREENForCausalLM(Qwen2ImgForCausalLM, EVEMetaForCausalLM):
                         loss = loss + torch.sum(mask_prob)*0
                 print('all_loss', loss)
         else:
+            print("labels is None: ")
             print('debug 1')
             hidden_states = outputs[0]
             print('debug 2')
