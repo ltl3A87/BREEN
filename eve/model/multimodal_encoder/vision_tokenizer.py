@@ -195,6 +195,8 @@ class VisionLinearTokenizer(nn.Module):
             print("patch_embed.shape: ", patch_embed.shape)
             patch_embed = patch_embed.flatten(1).transpose(0, 1)
             print("patch_embed.device: ", patch_embed.device)
+            device = patch_embed.device
+            modules = modules.to(device)
             temp_module = modules(patch_embed)
             patch_embeds_.append(temp_module)
             print("temp_module.shape: ", temp_module.shape)
