@@ -51,13 +51,8 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
             tokenizer = AutoTokenizer.from_pretrained(
                 model_path, use_fast=False)
             config = BREENConfig.from_pretrained(model_path)
-            model = BREENForCausalLM.from_pretrained(model_path, config=config, low_cpu_mem_usage=True, **kwargs)
-            for name, param in model.named_parameters():
-                if torch.isnan(param).any():
-                    print(f"NaN in {name}")
-                elif torch.isinf(param).any():
-                    print(f"Inf in {name}")
-            # model = BREENForCausalLM.from_pretrained(model_path, torch_dtype=torch.bfloat16, config=config)
+            # model = BREENForCausalLM.from_pretrained(model_path, config=config, low_cpu_mem_usage=True, **kwargs)
+            model = BREENForCausalLM.from_pretrained(model_path, torch_dtype=torch.float32, config=config)
             # model = BREENForCausalLM.from_pretrained(model_path, torch_dtype=torch.bfloat16, device_map="cpu")
     else:
         # Load language model
