@@ -2,7 +2,7 @@
 CKPT_NAME=$1
 CKPT_PATH=$2
 
-gdb -ex r --args python -m eve.eval.model_vqa \
+python -m eve.eval.model_vqa \
     --model-path ${CKPT_PATH}/${CKPT_NAME} \
     --question-file ./playground/data/eval/mm-vet/eve-mm-vet.jsonl \
     --image-folder ./playground/data/eval/mm-vet/images \
