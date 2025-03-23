@@ -18,7 +18,7 @@ dependencies = [
     "markdown2[all]", "numpy", "scikit-learn==1.2.2", "urllib3==1.26.0",
     "gradio==4.5.0", "requests", "httpx==0.24.0", "uvicorn", "fastapi","ftfy",
     "einops==0.6.1", "einops-exts==0.0.4", "timm==0.6.13", "prettytable", "openpyxl", "transformers==4.45.1",
-    "torch==2.1.1", "torchvision==0.16.1", "torchaudio==2.1.1", "xformers==0.0.23",
+    "torch==2.1.1+cu121", "torchvision==0.16.1", "torchaudio==2.1.1", "xformers==0.0.23", "deepspeed==0.14.4"
 ]
 
 [project.optional-dependencies]
