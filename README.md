@@ -28,7 +28,7 @@ Our model can be downloaded at HF 🤗[BREEN](https://huggingface.co/tianlelipho
 git clone https://github.com/ltl3A87/BREEN.git
 cd BREEN
 conda create -n breen python=3.10 -y
-conda activate eve_envs
+conda activate breen
 
 pip install --upgrade pip
 pip install -e .
